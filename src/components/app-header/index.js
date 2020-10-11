@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
 import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
 import { HeaderWrapper, HeaderLeft, HeaderRight } from "./style";
