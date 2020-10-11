@@ -7,7 +7,7 @@ export default memo(function KBAppHeader() {
     <HeaderWrapper>
       <div className="content wrap-v1">
         <HeaderLeft>
-          <NavLink to="/"></NavLink>
+          <a href="#/" className="logo sprite_01"></a>
         </HeaderLeft>
         <HeaderRight>
           <NavLink to="/">发现音乐</NavLink>
