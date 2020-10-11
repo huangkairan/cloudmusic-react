@@ -5,13 +5,14 @@ import routes from "./router";
 
 import KBAppHeader from "components/app-header";
 import KBAppFooter from "components/app-footer";
+import { HashRouter } from "react-router-dom";
 
 export default memo(function App() {
   return (
-    <div>
+    <HashRouter>
       <KBAppHeader />
       {renderRoutes(routes)}
       <KBAppFooter />
-    </div>
+    </HashRouter>
   );
 });
