@@ -1,11 +1,14 @@
 import React, { memo, useEffect } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getTopBannerAction } from "./store/actions";
 function KBRecommend(props) {
   //组件和redux关联：1获取数据 2进行操作
-  const {  topBanners  } = useSelector((state) =>  ({
-    topBanners:  state.recommend.topBanners,
-  }));;
+  const { topBanners } = useSelector(
+    (state) => ({
+      topBanners: state.recommend.topBanners,
+    }),
+    shallowEqual
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getTopBannerAction());
