@@ -1,7 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## 当前进度
-app-header完成
+recommend页面轮播图请求数据完成，还未集成immutable
 ## Available Scripts
 
 In the project directory, you can run:
