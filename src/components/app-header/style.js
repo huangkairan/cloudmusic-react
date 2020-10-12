@@ -22,11 +22,13 @@ export const HeaderLeft = styled.div`
     width: 176px;
     height: 69px;
     background-position: 0 0;
+    //将文字移除页面达到隐藏的效果
+    text-indent: -9999px;
   }
   .select-list {
     display: flex;
     line-height: 70px;
-    
+
     .select-item {
       position: relative;
       a {
@@ -50,12 +52,13 @@ export const HeaderLeft = styled.div`
         }
       }
 
-      &:hover a, a.active {
+      &:hover a,
+      a.active {
         color: #fff;
         background: #000;
         text-decoration: none;
       }
-      
+
       .active .icon {
         position: absolute;
         display: inline-block;

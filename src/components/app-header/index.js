@@ -22,7 +22,9 @@ export default memo(function KBAppHeader() {
     <HeaderWrapper>
       <div className="content wrap-v1">
         <HeaderLeft>
-          <a href="#/" className="logo sprite_01"></a>
+          <a href="#/" className="logo sprite_01">
+            网易云音乐
+          </a>
           <div className="select-list">
             {headerLinks.map((item, index) => {
               return (
