@@ -6,7 +6,7 @@ const instance = axios.create({
 });
 instance.interceptors.request.use(
   (config) => {
-    console.log("请求被拦截");
+    // console.log("请求被拦截");
     return config;
   },
   (err) => {}
