@@ -1,21 +1,34 @@
 import React, { memo, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { getTopBannerAction } from "./store/actions";
 function KBRecommend(props) {
-  const { getBanners } = props;
+  //组件和redux关联：1获取数据 2进行操作
+  const {  topBanners  } = useSelector((state) =>  ({
+    topBanners:  state.recommend.topBanners,
+  }));;
+  const dispatch = useDispatch();
   useEffect(() => {
-    getBanners();
-  }, [getBanners]);
-  return <div>KBRecommend</div>;
+    dispatch(getTopBannerAction());
+  }, [dispatch]);
+  //旧的操作
+  // const { getBanners } = props;
+  //   useEffect(() => {
+  //     getBanners();
+  //   }, [getBanners]);
+    return <div>
+      {topBanners.length}
+    </div>;
 }
 
-const mapStateToProps = (state) => ({
-  topBanners: state.recommend.topBanners,
-});
+export default memo(KBRecommend);
+//旧的操作
+// const mapStateToProps = (state) => ({
+//   topBanners: state.recommend.topBanners,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  getBanners: () => {
-    dispatch(getTopBannerAction());
-  },
-});
-export default connect(mapStateToProps, mapDispatchToProps)(memo(KBRecommend));
+// const mapDispatchToProps = (dispatch) => ({
+//   getBanners: () => {
+//     dispatch(getTopBannerAction());
+//   },
+// });
+// export default connect(mapStateToProps, mapDispatchToProps)(memo(KBRecommend));
