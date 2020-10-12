@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { Fragment, memo } from "react";
 
 import { AppFooterWrapper, FooterLeft, FooterRight } from "./style";
 import { footerLinks ,footerImages} from "@/common/local-data"
@@ -11,10 +11,10 @@ export default memo(function KBAppFooter() {
             {
               footerLinks.map((item,index)=>{
                 return (
-                  <div key={item.title} >
+                  <Fragment key={item.title} >
                     <a href={item.link} rel="noopener noreferrer" target="_blank">{item.title}</a>
                     <span className="line">|</span>
-                  </div>
+                  </Fragment>
                 )
               })
             }
