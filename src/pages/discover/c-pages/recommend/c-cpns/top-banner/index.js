@@ -1,15 +1,13 @@
-import React, { memo, useEffect ,useRef} from "react";
+import React, { memo, useEffect, useRef, useCallback, useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getTopBannerAction } from "../../store/actions";
 import { Carousel } from "antd";
 import { BannerWrapper, BannerLeft, BannerRight, BannerControl } from "./style";
 export default memo(function KBTopBanner() {
+  const [currentIndex,setCurrendIndex] = useState(0);
   //组件和redux关联：1获取数据 2进行操作
   const { topBanners } = useSelector(
     (state) => ({
-      // topBanners: state.recommend.topBanners,
-      //使用immutable和redux-immutable之后操作方式
-      // topBanners: state.get("recommend").get("topBanners"),
       topBanners: state.getIn(["recommend", "topBanners"]),
     }),
     shallowEqual
@@ -18,25 +16,25 @@ export default memo(function KBTopBanner() {
   useEffect(() => {
     dispatch(getTopBannerAction());
   }, [dispatch]);
-
+  const bannerChange = useCallback((from,to)=>{
+    setCurrendIndex(to);
+  },[])
   const bannerRef = useRef();
-  //旧的操作
-  // const { getBanners } = props;
-  //   useEffect(() => {
-  //     getBanners();
-  //   }, [getBanners]);
+
+  const bgImage = topBanners[currentIndex] && (topBanners[currentIndex].imageUrl + "?imageView&blur=40x20")
   return (
-    <BannerWrapper>
+    <BannerWrapper bgImage={bgImage}>
       <div className="banner wrap-v2">
         <BannerLeft>
           <Carousel 
           effect="fade" 
           autoplay="true" 
-          ref={bannerRef}>
+          ref={bannerRef} 
+          beforeChange={bannerChange}>
             {topBanners.map((item, index) => {
               return (
                 <div className="banner-item" key="item.imageUrl">
-                  <img src={item.imageUrl} alt=""  />
+                  <img src={item.imageUrl} alt="" />
                 </div>
               );
             })}
@@ -44,8 +42,14 @@ export default memo(function KBTopBanner() {
         </BannerLeft>
         <BannerRight></BannerRight>
         <BannerControl>
-          <button className="btn left" onClick={e=>bannerRef.current.prev()}></button>
-          <button className="btn right" onClick={e=>bannerRef.current.next()}></button>
+          <button
+            className="btn left"
+            onClick={(e) => bannerRef.current.prev()}
+          ></button>
+          <button
+            className="btn right"
+            onClick={(e) => bannerRef.current.next()}
+          ></button>
         </BannerControl>
       </div>
     </BannerWrapper>
