@@ -7,6 +7,8 @@ import {
 } from "./style";
 import TopBanner from "./c-cpns/top-banner";
 import HotRecommend from "./c-cpns/hot-recommend";
+import KBNewAlbum from "./c-cpns/new-album";
+import KBRanking from "./c-cpns/ranking";
 function KBRecommend(props) {
 
     return (
@@ -15,6 +17,8 @@ function KBRecommend(props) {
         <Content className="wrap-v2">
           <RecommendLeft>
             <HotRecommend />
+            <KBNewAlbum />
+            <KBRanking />
           </RecommendLeft>
           <RecommendRight></RecommendRight>
         </Content>
