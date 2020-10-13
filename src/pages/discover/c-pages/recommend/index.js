@@ -1,12 +1,12 @@
 import React, { memo } from "react";
-
+import { RecommendWrapper } from "./style";
 import TopBanner from "./c-cpns/top-banner";
 function KBRecommend(props) {
 
     return (
-      <div>
+      <RecommendWrapper>
         <TopBanner />
-      </div>
+      </RecommendWrapper>
     );
 }
 

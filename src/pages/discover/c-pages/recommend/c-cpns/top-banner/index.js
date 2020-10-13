@@ -1,6 +1,7 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect ,useRef} from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getTopBannerAction } from "../../store/actions";
+import { Carousel } from "antd";
 import { BannerWrapper, BannerLeft, BannerRight, BannerControl } from "./style";
 export default memo(function KBTopBanner() {
   //组件和redux关联：1获取数据 2进行操作
@@ -17,6 +18,8 @@ export default memo(function KBTopBanner() {
   useEffect(() => {
     dispatch(getTopBannerAction());
   }, [dispatch]);
+
+  const bannerRef = useRef();
   //旧的操作
   // const { getBanners } = props;
   //   useEffect(() => {
@@ -25,8 +28,25 @@ export default memo(function KBTopBanner() {
   return (
     <BannerWrapper>
       <div className="banner wrap-v2">
-        <BannerLeft></BannerLeft>
+        <BannerLeft>
+          <Carousel 
+          effect="fade" 
+          autoplay="true" 
+          ref={bannerRef}>
+            {topBanners.map((item, index) => {
+              return (
+                <div className="banner-item" key="item.imageUrl">
+                  <img src={item.imageUrl} alt=""  />
+                </div>
+              );
+            })}
+          </Carousel>
+        </BannerLeft>
         <BannerRight></BannerRight>
+        <BannerControl>
+          <button className="btn left" onClick={e=>bannerRef.current.prev()}></button>
+          <button className="btn right" onClick={e=>bannerRef.current.next()}></button>
+        </BannerControl>
       </div>
     </BannerWrapper>
   );
