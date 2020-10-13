@@ -1,11 +1,14 @@
 import React, { memo, useEffect } from "react";
-import { connect, useDispatch, useSelector, shallowEqual } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getTopBannerAction } from "./store/actions";
 function KBRecommend(props) {
   //组件和redux关联：1获取数据 2进行操作
   const { topBanners } = useSelector(
     (state) => ({
-      topBanners: state.recommend.topBanners,
+      // topBanners: state.recommend.topBanners,
+      //使用immutable和redux-immutable之后操作方式
+      // topBanners: state.get("recommend").get("topBanners"),
+      topBanners: state.getIn(["recommend", "topBanners"]),
     }),
     shallowEqual
   );
