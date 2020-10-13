@@ -1,7 +1,18 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { HotRecommendWrapper } from "./style";
 import KBThemeHeaderRCM from "@/components/theme-header-rcm";
+
+import { getHotRecommendAction } from "../../store/actions";
 export default memo(function KBHotRecommend() {
+  //state
+  //redux hooks
+  const dispatch = useDispatch();
+
+  //other hooks
+  useEffect(() => {
+    dispatch(getHotRecommendAction(8));
+  }, [dispatch]);
   return (
     <HotRecommendWrapper>
       <KBThemeHeaderRCM
