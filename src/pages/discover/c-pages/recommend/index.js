@@ -1,24 +1,25 @@
 import React, { memo } from "react";
-import { RecommendWrapper } from "./style";
+import {
+  RecommendWrapper,
+  Content,
+  RecommendLeft,
+  RecommendRight,
+} from "./style";
 import TopBanner from "./c-cpns/top-banner";
+import HotRecommend from "./c-cpns/hot-recommend";
 function KBRecommend(props) {
 
     return (
       <RecommendWrapper>
         <TopBanner />
+        <Content className="wrap-v2">
+          <RecommendLeft>
+            <HotRecommend />
+          </RecommendLeft>
+          <RecommendRight></RecommendRight>
+        </Content>
       </RecommendWrapper>
     );
 }
 
 export default memo(KBRecommend);
-//旧的操作
-// const mapStateToProps = (state) => ({
-//   topBanners: state.recommend.topBanners,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   getBanners: () => {
-//     dispatch(getTopBannerAction());
-//   },
-// });
-// export default connect(mapStateToProps, mapDispatchToProps)(memo(KBRecommend));
