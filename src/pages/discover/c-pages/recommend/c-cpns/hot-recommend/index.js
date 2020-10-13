@@ -2,7 +2,7 @@ import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { HotRecommendWrapper } from "./style";
 import KBThemeHeaderRCM from "@/components/theme-header-rcm";
-
+import KBSongsCover from "@/components/songs-cover";
 import { getHotRecommendAction } from "../../store/actions";
 export default memo(function KBHotRecommend() {
   //state
@@ -26,7 +26,7 @@ export default memo(function KBHotRecommend() {
       />
       <div className="recommend-list">
         {hotRecommends.map((item, index) => {
-          return <div key={item.id}>{item.name}</div>;
+          return <KBSongsCover key={item.id} info={item} />;
         })}
       </div>
     </HotRecommendWrapper>
