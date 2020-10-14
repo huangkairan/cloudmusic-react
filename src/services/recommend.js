@@ -21,3 +21,11 @@ export function getNewAlbums(limit) {
     },
   });
 }
+export function getTopRanking(idx) {
+  return request({
+    url: "/top/list",
+    params: {
+      idx,
+    },
+  });
+}
