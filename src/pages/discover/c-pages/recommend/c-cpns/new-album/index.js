@@ -2,6 +2,7 @@ import React, { memo, useEffect, useRef } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Carousel } from "antd";
 import KBThemeHeaderRCM from "@/components/theme-header-rcm";
+import KBAlbumCover from "@/components/album-cover";
 import { KBNewAlbumWrapper } from "./style";
 import { getNewAlbumAction } from "../../store/actions";
 export default memo(function KBNewAlbum() {
@@ -30,9 +31,15 @@ export default memo(function KBNewAlbum() {
               return <div className="page" key={item}>
                 {
                   newAlbums.slice(item*5,(item+1)*5).map((data,index)=>{
-                  return <div key={data.id}>
-                    {data.name}
-                  </div>
+                  return (
+                    <KBAlbumCover
+                      key={data.id}
+                      info={data}
+                      size={100}
+                      width={118}
+                      bgp={"-570px"}
+                    />
+                  );
                 })
                 }
               </div>;
