@@ -1,6 +1,7 @@
 import * as actionTypes from "./constants";
-import { getSongDetail } from "@/services/player";
+import { getSongDetail, getLyric } from "@/services/player";
 import { getRandom } from "@/utils/math-utils";
+import { parseLyric } from "@/utils/parse-lyric";
 const changeCurrentSongAction = (currentSong) => ({
   type: actionTypes.CHANGE_CURRNET_SONG,
   currentSong,
@@ -12,6 +13,10 @@ const changePlayListAction = (playList) => ({
 const changeCurrentSongIndexAction = (index) => ({
   type: actionTypes.CHANGE_CURRENT_SONG_INDEX,
   index,
+});
+const changeLyricListAction = (lyricList) => ({
+  type: actionTypes.CHANGE_LYRICS_LIST,
+  lyricList,
 });
 export const changeSequenceAction = (sequence) => ({
   type: actionTypes.CHANGE_SEQUENCE,
@@ -40,6 +45,7 @@ export const changeCurrentSongAndIndex = (tag) => {
     const currentSong = playList[currentSongIndex];
     dispatch(changeCurrentSongAction(currentSong));
     dispatch(changeCurrentSongIndexAction(currentSongIndex));
+    dispatch(getLyricAction(currentSong.id));
   };
 };
 export const getSongDetailAction = (ids) => {
@@ -48,13 +54,15 @@ export const getSongDetailAction = (ids) => {
     const playList = getState().getIn(["player", "playList"]);
     const songIndex = playList.findIndex((song) => song.id === ids);
     //2.判断是否找到歌曲
+    let song = null;
     if (songIndex !== -1) {
       dispatch(changeCurrentSongIndexAction(songIndex));
-      const song = playList[songIndex];
+      song = playList[songIndex];
       dispatch(changeCurrentSongAction(song));
+      dispatch(getLyricAction(song.id));
     } else {
       getSongDetail(ids).then((res) => {
-        const song = res.songs && res.songs[0];
+        song = res.songs && res.songs[0];
         if (!song) return;
         //1.将最新请求到的歌曲添加到播放列表内
         const newPlayList = [...playList];
@@ -63,7 +71,21 @@ export const getSongDetailAction = (ids) => {
         dispatch(changePlayListAction(newPlayList));
         dispatch(changeCurrentSongIndexAction(newPlayList.length - 1));
         dispatch(changeCurrentSongAction(song));
+
+        //3.请求歌词
+        if (!song) return;
+        dispatch(getLyricAction(song.id));
       });
     }
+  };
+};
+
+export const getLyricAction = (id) => {
+  return (dispatch) => {
+    getLyric(id).then((res) => {
+      const lyric = res.lrc.lyric;
+      const lyricList = parseLyric(lyric);
+      dispatch(changeLyricListAction(lyricList));
+    });
   };
 };
