@@ -1,7 +1,13 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 import { Slider } from "antd";
+import { getSongDetailAction } from "../store/actions";
 export default memo(function KBAppPlayerBar() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getSongDetailAction(1452439191));
+  }, [dispatch]);
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
