@@ -9,7 +9,7 @@ import KBSongs from "@/pages/discover/c-pages/songs";
 import KBDjradio from "@/pages/discover/c-pages/djradio";
 import KBArtist from "@/pages/discover/c-pages/artist";
 import KBAlbum from "@/pages/discover/c-pages/album";
-import KBPlayer from "@/pages/discover/c-pages/player";
+import KBPlayer from "@/pages/player";
 const routes = [
   {
     path: "/",

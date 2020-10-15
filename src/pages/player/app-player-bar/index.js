@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 import { Slider } from "antd";
 import { getSongDetailAction } from "../store/actions";
@@ -10,10 +11,10 @@ import {
 } from "@/utils/format-utils";
 export default memo(function KBAppPlayerBar() {
   //state
-  const [currentTime,  setCurrentTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isChangiing, setIsChangiing] = useState(false);
-  const [isPlaying,setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
   const { currentSong } = useSelector(
@@ -27,30 +28,30 @@ export default memo(function KBAppPlayerBar() {
   useEffect(() => {
     dispatch(getSongDetailAction(1452439191));
   }, [dispatch]);
-  useEffect(()=>{
+  useEffect(() => {
     audioRef.current.src = getPlaySong(currentSong.id);
-  },[currentSong])
+  }, [currentSong]);
   //other handle
   const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
   const singerName = (currentSong.ar && currentSong.ar[0].name) || "未知歌手";
   const duration = currentSong.dt || 0;
   const showDuration = formatMinuteSecond(duration);
   //handle function
-  const playMusic = () => {
-    isPlaying? audioRef.current.pause():audioRef.current.play();
-    setIsPlaying(!isPlaying)
-  };
-  const timeUpdate = e =>{
-    if  (!isChangiing)  {
+  const playMusic = useCallback(() => {
+    isPlaying ? audioRef.current.pause() : audioRef.current.play();
+    setIsPlaying(!isPlaying);
+  }, [isPlaying]);
+  const timeUpdate = (e) => {
+    if (!isChangiing) {
       setCurrentTime(e.target.currentTime * 1000);
       setProgress((currentTime / duration) * 100);
     }
-  }
-  const showCurrentTime = formatMinuteSecond(currentTime)
+  };
+  const showCurrentTime = formatMinuteSecond(currentTime);
   const sliderChange = useCallback(
     (value) => {
       setIsChangiing(true);
-      const time = ((value / 100)) * duration;
+      const time = (value / 100) * duration;
       setCurrentTime(time);
       setProgress(value);
     },
@@ -81,9 +82,9 @@ export default memo(function KBAppPlayerBar() {
         </Control>
         <PlayInfo>
           <div className="image">
-            <a href="/todo">
+            <NavLink to="/discover/player">
               <img src={getSizeImage(picUrl, 35)} alt="" />
-            </a>
+            </NavLink>
           </div>
           <div className="info">
             <div className="song">
