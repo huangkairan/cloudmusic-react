@@ -3,9 +3,11 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 import { Slider } from "antd";
-import { changeSequenceAction, 
-        getSongDetailAction,
-        changeCurrentSong} from "../store/actions";
+import {
+  changeSequenceAction,
+  getSongDetailAction,
+  changeCurrentSongAndIndex,
+} from "../store/actions";
 import {
   getSizeImage,
   formatMinuteSecond,
@@ -84,10 +86,14 @@ export default memo(function KBAppPlayerBar() {
     dispatch(changeSequenceAction(currentSequence));
   };
   const changeMusic = (tag) => {
-    dispatch(changeCurrentSong(tag));
+    dispatch(changeCurrentSongAndIndex(tag));
   };
   const handleMusicEnded = () => {
-    dispatch(changeCurrentSong(1));
+    if (sequence === 2) {
+      audioRef.current.currentTime = 0;
+    } else {
+      dispatch(changeCurrentSongAndIndex(1));
+    }
   };
   return (
     <PlaybarWrapper className="sprite_player">
