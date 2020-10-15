@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 import { Slider } from "antd";
@@ -11,6 +11,8 @@ import {
 export default memo(function KBAppPlayerBar() {
   //state
   const [currentTime,  setCurrentTime] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [isChangiing, setIsChangiing] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
   const { currentSong } = useSelector(
@@ -35,10 +37,21 @@ export default memo(function KBAppPlayerBar() {
     audioRef.current.play();
   };
   const timeUpdate = e =>{
-    setCurrentTime(e.target.currentTime*1000);
+    setCurrentTime(e.target.currentTime * 1000);
+    if  (!isChangiing)  {
+      setProgress((currentTime / duration) * 100);
+    }
   }
-  const progress = currentTime / duration * 100;
   const showCurrentTime = formatMinuteSecond(currentTime)
+  const sliderChange = useCallback((value) => {
+    setIsChangiing(true);
+    setProgress(value);
+  }, []);
+  const sliderAfterChange = useCallback((value) => {
+    const time = value / 100 * duration / 1000;
+    audioRef.current.currentTime = time;
+    setIsChangiing(false);
+  }, [duration]);
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
@@ -64,7 +77,12 @@ export default memo(function KBAppPlayerBar() {
               </a>
             </div>
             <div className="progress">
-              <Slider defaultValue={30} value={progress}/>
+              <Slider
+                defaultValue={30}
+                value={progress}
+                onChange={sliderChange}
+                onAfterChange={sliderAfterChange}
+              />
               <div className="time">
                 <span className="now-time">{showCurrentTime}</span>
                 <span className="divider">/</span>
@@ -85,7 +103,7 @@ export default memo(function KBAppPlayerBar() {
           </div>
         </Operator>
       </div>
-      <audio ref={audioRef} onTimeUpdate={timeUpdate}/>
+      <audio ref={audioRef} onTimeUpdate={timeUpdate} />
     </PlaybarWrapper>
   );
 });
