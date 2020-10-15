@@ -13,6 +13,7 @@ export default memo(function KBAppPlayerBar() {
   const [currentTime,  setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isChangiing, setIsChangiing] = useState(false);
+  const [isPlaying,setIsPlaying] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
   const { currentSong } = useSelector(
@@ -26,6 +27,9 @@ export default memo(function KBAppPlayerBar() {
   useEffect(() => {
     dispatch(getSongDetailAction(1452439191));
   }, [dispatch]);
+  useEffect(()=>{
+    audioRef.current.src = getPlaySong(currentSong.id);
+  },[currentSong])
   //other handle
   const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
   const singerName = (currentSong.ar && currentSong.ar[0].name) || "未知歌手";
@@ -33,29 +37,35 @@ export default memo(function KBAppPlayerBar() {
   const showDuration = formatMinuteSecond(duration);
   //handle function
   const playMusic = () => {
-    audioRef.current.src = getPlaySong(currentSong.id);
-    audioRef.current.play();
+    isPlaying? audioRef.current.pause():audioRef.current.play();
+    setIsPlaying(!isPlaying)
   };
   const timeUpdate = e =>{
-    setCurrentTime(e.target.currentTime * 1000);
     if  (!isChangiing)  {
+      setCurrentTime(e.target.currentTime * 1000);
       setProgress((currentTime / duration) * 100);
     }
   }
   const showCurrentTime = formatMinuteSecond(currentTime)
-  const sliderChange = useCallback((value) => {
-    setIsChangiing(true);
-    setProgress(value);
-  }, []);
+  const sliderChange = useCallback(
+    (value) => {
+      setIsChangiing(true);
+      const time = ((value / 100)) * duration;
+      setCurrentTime(time);
+      setProgress(value);
+    },
+    [duration]
+  );
   const sliderAfterChange = useCallback((value) => {
-    const time = value / 100 * duration / 1000;
+    const time = (value / 100) * duration /1000;
     audioRef.current.currentTime = time;
+    setCurrentTime(time*1000);
     setIsChangiing(false);
   }, [duration]);
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
-        <Control>
+        <Control isPlaying={isPlaying}>
           <button className="sprite_player prev"></button>
           <button
             className="sprite_player play"
