@@ -3,7 +3,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
 import { Slider } from "antd";
-import { getSongDetailAction } from "../store/actions";
+import { changeSequenceAction, 
+        getSongDetailAction,
+        changeCurrentSong} from "../store/actions";
 import {
   getSizeImage,
   formatMinuteSecond,
@@ -17,9 +19,11 @@ export default memo(function KBAppPlayerBar() {
   const [isPlaying, setIsPlaying] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
-  const { currentSong } = useSelector(
+  const { currentSong,  sequence,playList } = useSelector(
     (state) => ({
       currentSong: state.getIn(["player", "currentSong"]),
+      sequence:  state.getIn(["player",  "sequence"]),
+      playList: state.getIn(["player","playList"])
     }),
     shallowEqual
   );
@@ -30,6 +34,11 @@ export default memo(function KBAppPlayerBar() {
   }, [dispatch]);
   useEffect(() => {
     audioRef.current.src = getPlaySong(currentSong.id);
+    audioRef.current.play().then(res=>{
+      setIsPlaying(true);
+    }).catch(err=>{
+      setIsPlaying(false);
+    })
   }, [currentSong]);
   //other handle
   const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
@@ -69,16 +78,26 @@ export default memo(function KBAppPlayerBar() {
     },
     [duration, isPlaying, playMusic]
   );
+  const changeSequence = () => {
+    let currentSequence = sequence + 1;
+    if (currentSequence > 2) currentSequence = 0;
+    dispatch(changeSequenceAction(currentSequence));
+  };
+  const changeMusic = (tag) =>{
+    dispatch(changeCurrentSong(tag));
+  }
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
         <Control isPlaying={isPlaying}>
-          <button className="sprite_player prev"></button>
+          <button className="sprite_player prev"
+                  onClick={e=>changeMusic(-1)}></button>
           <button
             className="sprite_player play"
             onClick={(e) => playMusic()}
           ></button>
-          <button className="sprite_player next"></button>
+          <button className="sprite_player next"
+                  onClick={e=>changeMusic(1)}></button>
         </Control>
         <PlayInfo>
           <div className="image">
@@ -108,15 +127,20 @@ export default memo(function KBAppPlayerBar() {
             </div>
           </div>
         </PlayInfo>
-        <Operator>
+        <Operator sequence={sequence}>
           <div className="left">
             <button className="sprite_player btn favor"></button>
             <button className="sprite_player btn share"></button>
           </div>
           <div className="right sprite_player">
             <button className="sprite_player btn volume"></button>
-            <button className="sprite_player btn loop"></button>
-            <button className="sprite_player btn playlist"></button>
+            <button
+              className="sprite_player btn loop"
+              onClick={(e) => changeSequence()}
+            ></button>
+            <button className="sprite_player btn playlist">
+              {playList.length}
+            </button>
           </div>
         </Operator>
       </div>

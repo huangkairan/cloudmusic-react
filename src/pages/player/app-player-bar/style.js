@@ -158,6 +158,7 @@ export const Operator = styled.div`
     }
 
     .playlist {
+      display: inline-block;
       width: 59px;
       background-position: -42px -68px;
     }
