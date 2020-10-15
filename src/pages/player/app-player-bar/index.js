@@ -91,6 +91,7 @@ export default memo(function KBAppPlayerBar() {
   const handleMusicEnded = () => {
     if (sequence === 2) {
       audioRef.current.currentTime = 0;
+      audioRef.current.play();
     } else {
       dispatch(changeCurrentSongAndIndex(1));
     }
