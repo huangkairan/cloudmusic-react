@@ -1,7 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## 当前进度
-recommend页面轮播图请求数据完成，还未集成immutable
+歌曲播放、切换、暂停、进度条监听
+将歌曲加入播放列表
+将歌词存入redux
+
+推荐页面 右侧未完成
+歌词页面 歌词显示 未完成
+
 ## Available Scripts
 
 In the project directory, you can run:
