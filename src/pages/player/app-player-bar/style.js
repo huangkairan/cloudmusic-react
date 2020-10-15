@@ -29,6 +29,7 @@ export const Control = styled.div`
   .next {
     width: 28px;
     height: 28px;
+    cursor: pointer;
   }
 
   .prev {
@@ -40,6 +41,7 @@ export const Control = styled.div`
     height: 36px;
     margin: 0 8px;
     background-position: 0 ${(props) => (props.isPlaying ? "-165px" : "-204px")};
+    cursor: pointer;
   }
 
   .next {
