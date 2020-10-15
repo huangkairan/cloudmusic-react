@@ -56,12 +56,18 @@ export default memo(function KBAppPlayerBar() {
     },
     [duration]
   );
-  const sliderAfterChange = useCallback((value) => {
-    const time = (value / 100) * duration /1000;
-    audioRef.current.currentTime = time;
-    setCurrentTime(time*1000);
-    setIsChangiing(false);
-  }, [duration]);
+  const sliderAfterChange = useCallback(
+    (value) => {
+      const time = ((value / 100) * duration) / 1000;
+      audioRef.current.currentTime = time;
+      setCurrentTime(time * 1000);
+      setIsChangiing(false);
+      if (!isPlaying) {
+        playMusic();
+      }
+    },
+    [duration, isPlaying, playMusic]
+  );
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
