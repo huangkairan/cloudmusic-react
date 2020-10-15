@@ -83,21 +83,28 @@ export default memo(function KBAppPlayerBar() {
     if (currentSequence > 2) currentSequence = 0;
     dispatch(changeSequenceAction(currentSequence));
   };
-  const changeMusic = (tag) =>{
+  const changeMusic = (tag) => {
     dispatch(changeCurrentSong(tag));
-  }
+  };
+  const handleMusicEnded = () => {
+    dispatch(changeCurrentSong(1));
+  };
   return (
     <PlaybarWrapper className="sprite_player">
       <div className="content wrap-v2">
         <Control isPlaying={isPlaying}>
-          <button className="sprite_player prev"
-                  onClick={e=>changeMusic(-1)}></button>
+          <button
+            className="sprite_player prev"
+            onClick={(e) => changeMusic(-1)}
+          ></button>
           <button
             className="sprite_player play"
             onClick={(e) => playMusic()}
           ></button>
-          <button className="sprite_player next"
-                  onClick={e=>changeMusic(1)}></button>
+          <button
+            className="sprite_player next"
+            onClick={(e) => changeMusic(1)}
+          ></button>
         </Control>
         <PlayInfo>
           <div className="image">
@@ -144,7 +151,11 @@ export default memo(function KBAppPlayerBar() {
           </div>
         </Operator>
       </div>
-      <audio ref={audioRef} onTimeUpdate={timeUpdate} />
+      <audio
+        ref={audioRef}
+        onTimeUpdate={(e) => timeUpdate(e)}
+        onEnded={(e) => handleMusicEnded()}
+      />
     </PlaybarWrapper>
   );
 });
