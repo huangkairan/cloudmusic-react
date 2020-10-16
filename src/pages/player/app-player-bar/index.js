@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState, useCallback } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { PlaybarWrapper, Control, PlayInfo, Operator } from "./style";
-import { Slider } from "antd";
+import { Slider, message } from "antd";
 import {
   changeSequenceAction,
   getSongDetailAction,
@@ -80,6 +80,16 @@ export default memo(function KBAppPlayerBar() {
     }
     if (currentLyricIndex !== i - 1) {
       dispatch(changeCurrentLyricIndexAction(i - 1));
+      const content = lyricList[i - 1] && lyricList[i - 1].content;
+      if (content !== "") {
+        message.open({
+          key: "lyric",
+          content,
+          duration: 0,
+          className: "lyric-class",
+        });
+      }
+      
     }
   };
   const showCurrentTime = formatMinuteSecond(currentTime);
