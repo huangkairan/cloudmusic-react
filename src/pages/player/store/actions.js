@@ -22,6 +22,10 @@ export const changeSequenceAction = (sequence) => ({
   type: actionTypes.CHANGE_SEQUENCE,
   sequence,
 });
+export const changeCurrentLyricIndexAction = (index) => ({
+  type: actionTypes.CHANGE_CURRENT_LYRIC_INDEX,
+  index,
+});
 export const changeCurrentSongAndIndex = (tag) => {
   return (dispatch, getState) => {
     const sequence = getState().getIn(["player", "sequence"]);
@@ -48,6 +52,7 @@ export const changeCurrentSongAndIndex = (tag) => {
     dispatch(getLyricAction(currentSong.id));
   };
 };
+
 export const getSongDetailAction = (ids) => {
   return (dispatch, getState) => {
     //1.根据id查找playlist中是否有该歌曲

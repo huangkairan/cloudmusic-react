@@ -7,6 +7,7 @@ import {
   changeSequenceAction,
   getSongDetailAction,
   changeCurrentSongAndIndex,
+  changeCurrentLyricIndexAction,
 } from "../store/actions";
 import {
   getSizeImage,
@@ -21,11 +22,19 @@ export default memo(function KBAppPlayerBar() {
   const [isPlaying, setIsPlaying] = useState(false);
   //redux hooks
   const dispatch = useDispatch();
-  const { currentSong,  sequence,playList } = useSelector(
+  const {
+    currentSong,
+    sequence,
+    playList,
+    lyricList,
+    currentLyricIndex,
+  } = useSelector(
     (state) => ({
       currentSong: state.getIn(["player", "currentSong"]),
-      sequence:  state.getIn(["player",  "sequence"]),
-      playList: state.getIn(["player","playList"])
+      sequence: state.getIn(["player", "sequence"]),
+      playList: state.getIn(["player", "playList"]),
+      lyricList: state.getIn(["player", "lyricList"]),
+      currentLyricIndex: state.getIn(["player", "currentLyricIndex"]),
     }),
     shallowEqual
   );
@@ -36,11 +45,14 @@ export default memo(function KBAppPlayerBar() {
   }, [dispatch]);
   useEffect(() => {
     audioRef.current.src = getPlaySong(currentSong.id);
-    audioRef.current.play().then(res=>{
-      setIsPlaying(true);
-    }).catch(err=>{
-      setIsPlaying(false);
-    })
+    audioRef.current
+      .play()
+      .then((res) => {
+        setIsPlaying(true);
+      })
+      .catch((err) => {
+        setIsPlaying(false);
+      });
   }, [currentSong]);
   //other handle
   const picUrl = (currentSong.al && currentSong.al.picUrl) || "";
@@ -53,9 +65,21 @@ export default memo(function KBAppPlayerBar() {
     setIsPlaying(!isPlaying);
   }, [isPlaying]);
   const timeUpdate = (e) => {
+    const currentTime = e.target.currentTime;
     if (!isChangiing) {
-      setCurrentTime(e.target.currentTime * 1000);
-      setProgress((currentTime / duration) * 100);
+      setCurrentTime(currentTime * 1000);
+      setProgress(((currentTime * 1000) / duration) * 100);
+    }
+    //获取当前歌词
+    let i = 0;
+    for (; i < lyricList.length; i++) {
+      let lyricItem = lyricList[i];
+      if (currentTime * 1000 < lyricItem.time) {
+        break;
+      }
+    }
+    if (currentLyricIndex !== i - 1) {
+      dispatch(changeCurrentLyricIndexAction(i - 1));
     }
   };
   const showCurrentTime = formatMinuteSecond(currentTime);
