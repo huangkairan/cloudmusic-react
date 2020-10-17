@@ -4,7 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 歌曲播放、切换、暂停、进度条监听
 将歌曲加入播放列表
 将歌词存入redux
-
+## TODO
+首页右侧部分组件效果
 推荐页面 右侧未完成
 歌词页面 歌词显示 未完成
 
