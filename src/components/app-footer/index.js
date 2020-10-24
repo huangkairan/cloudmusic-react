@@ -22,8 +22,7 @@ export default memo(function KBAppFooter() {
           <div className="copyright">
           <span>网易公司版权所有©1997-2020</span>
           <span>
-            杭州乐读科技有限公司运营：
-            <a href="https://p1.music.126.net/Mos9LTpl6kYt6YTutA6gjg==/109951164248627501.png" rel="noopener noreferrer" target="_blank">浙网文[2018]3506-263号</a>
+            huangkairan
           </span>
         </div>
         <div className="report">
@@ -34,8 +33,8 @@ export default memo(function KBAppFooter() {
           </span>
         </div>
         <div className="info">
-          <span>粤B2-20090191-18</span>
-          <a href="http://www.beian.miit.gov.cn/publish/query/indexFirst.action" rel="noopener noreferrer" target="_blank">
+          <span>浙ICP备2020037989号-1</span>
+          <a href="https://beian.miit.gov.cn/#/Integrated/index" rel="noopener noreferrer" target="_blank">
             工业和信息化部备案管理系统网站
           </a>
         </div>
